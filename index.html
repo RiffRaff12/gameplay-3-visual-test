@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gameplay 3</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: #09090b; }
+
+    /* Full-viewport main frame */
+    #main-slot {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+    }
+
+    /* Sheet overlay – slides up from bottom */
+    #sheet-slot {
+      position: fixed;
+      inset: 0;
+      z-index: 2;
+      transform: translateY(100%);
+      transition: transform 0.38s cubic-bezier(0.32, 0.72, 0, 1);
+      pointer-events: none;
+    }
+
+    #sheet-slot.open {
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="main-slot">
+    <iframe id="main-frame" src="design-reference/home-default.html"></iframe>
+  </div>
+
+  <div id="sheet-slot">
+    <iframe id="sheet-frame" src="about:blank"></iframe>
+  </div>
+
+  <script>
+    // ─── Screens ──────────────────────────────────────────────────────────────
+    const SCREENS = {
+      'home-default':    'design-reference/home-default.html',
+      'session-detail':  'design-reference/home-Session detail _ live.html',
+      'new-session':     'design-reference/home-New session sheet _defaults preview_.html',
+      'community-list':  'design-reference/community-List _ default.html',
+      'add-player':      'design-reference/community-Add player form.html',
+      'edit-player':     'design-reference/community-Edit player _ with delete.html',
+      'archive-grouped': 'design-reference/Archive _ grouped by month.html',
+      'archive-empty':   'design-reference/archive-Empty state.html',
+      'past-session':    'design-reference/archive-Past session _ read-only.html',
+      'settings':        'design-reference/Settings _ defaults.html',
+    };
+
+    // Screens that animate as a bottom sheet over the current screen
+    const SHEET_SCREENS = new Set(['new-session']);
+
+    // ─── Navigation rules ─────────────────────────────────────────────────────
+    // Keyed by current screen name.
+    // Numbers = btn-tap button indices (in DOM order).
+    // '_card' = what a cursor:pointer content-area click navigates to.
+    const NAV = {
+      'home-default': {
+        0: 'settings',          // gear icon
+        // 1 = bell – no action
+        2: 'new-session',       // New button  → sheet
+        3: 'archive-grouped',   // See all
+        4: 'home-default',
+        5: 'archive-grouped',
+        6: 'community-list',
+        _card: 'session-detail',
+      },
+      'session-detail': {
+        0: 'home-default',      // Sessions tab = back
+      },
+      'new-session': {          // rendered as sheet
+        4: 'home-default',
+        5: 'archive-grouped',
+        6: 'community-list',
+        9: 'dismiss',           // Cancel
+        10: 'home-default',     // Create session
+      },
+      'community-list': {
+        0: 'add-player',
+        1: 'home-default',
+        2: 'archive-grouped',
+        3: 'community-list',
+        _card: 'edit-player',
+      },
+      'add-player': {
+        1: 'home-default',
+        2: 'archive-grouped',
+        3: 'community-list',
+        8: 'community-list',    // Cancel
+      },
+      'edit-player': {
+        1: 'home-default',
+        2: 'archive-grouped',
+        3: 'community-list',
+        9: 'community-list',    // Cancel
+        10: 'community-list',   // Save changes
+      },
+      'archive-grouped': {
+        0: 'home-default',
+        1: 'archive-grouped',
+        2: 'community-list',
+        _card: 'past-session',
+      },
+      'archive-empty': {
+        0: 'home-default',
+        1: 'archive-grouped',
+        2: 'community-list',
+      },
+      'past-session': {
+        0: 'archive-grouped',   // Archive tab = back
+      },
+      'settings': {
+        0: 'home-default',      // Back
+      },
+    };
+
+    // ─── State ────────────────────────────────────────────────────────────────
+    const mainFrame  = document.getElementById('main-frame');
+    const sheetFrame = document.getElementById('sheet-frame');
+    const sheetSlot  = document.getElementById('sheet-slot');
+
+    let currentMain  = 'home-default';
+    let currentSheet = null;   // name of screen in sheet, or null
+    let sheetOpen    = false;
+
+    // ─── Script injected into every iframe ────────────────────────────────────
+    // Wires btn-tap buttons and content-area card clicks → postMessage to parent.
+    function buildInjectedScript(screenName) {
+      return `(function(screen) {
+  // Wire all btn-tap buttons
+  var btns = document.querySelectorAll('.btn-tap');
+  btns.forEach(function(btn, idx) {
+    btn.addEventListener('click', function(e) {
+      e.stopImmediatePropagation();
+      window.parent.postMessage({ type: 'btn', screen: screen, idx: idx }, '*');
+    }, true);
+  });
+
+  // Wire cursor:pointer content-area elements as card clicks.
+  // Skip actual buttons so we don't double-fire.
+  document.addEventListener('click', function(e) {
+    var el = e.target;
+    // bail if the click originated from a button
+    while (el && el !== document.body) {
+      if (el.tagName === 'BUTTON') return;
+      el = el.parentElement;
+    }
+    // walk up from target looking for cursor:pointer
+    el = e.target;
+    while (el && el !== document.body) {
+      var s = el.getAttribute ? (el.getAttribute('style') || '') : '';
+      if (s.indexOf('cursor: pointer') !== -1 || s.indexOf('cursor:pointer') !== -1) {
+        window.parent.postMessage({ type: 'card', screen: screen }, '*');
+        return;
+      }
+      el = el.parentElement;
+    }
+  }, false);
+})(${JSON.stringify(screenName)});`;
+    }
+
+    function inject(frame, screenName) {
+      try {
+        var doc = frame.contentDocument;
+        if (!doc || !doc.body) return;
+        var old = doc.getElementById('__gp_nav__');
+        if (old) old.remove();
+        var s = doc.createElement('script');
+        s.id = '__gp_nav__';
+        s.textContent = buildInjectedScript(screenName);
+        doc.body.appendChild(s);
+      } catch (err) {
+        // cross-origin – shouldn't happen locally
+        console.warn('inject failed:', err);
+      }
+    }
+
+    // ─── Load helpers ─────────────────────────────────────────────────────────
+    function loadMain(screenName) {
+      currentMain = screenName;
+      mainFrame.src = SCREENS[screenName];
+    }
+
+    function openSheet(screenName) {
+      currentSheet = screenName;
+      var onLoad = function() {
+        sheetFrame.removeEventListener('load', onLoad);
+        inject(sheetFrame, screenName);
+        requestAnimationFrame(function() {
+          sheetSlot.classList.add('open');
+          sheetOpen = true;
+        });
+      };
+      sheetFrame.addEventListener('load', onLoad);
+      sheetFrame.src = SCREENS[screenName];
+    }
+
+    function closeSheet(thenNavigate) {
+      if (!sheetOpen) {
+        if (thenNavigate) loadMain(thenNavigate);
+        return;
+      }
+      sheetSlot.classList.remove('open');
+      sheetOpen = false;
+      setTimeout(function() {
+        sheetFrame.src = 'about:blank';
+        currentSheet = null;
+        if (thenNavigate) loadMain(thenNavigate);
+      }, 380);
+    }
+
+    // ─── Iframe load → inject ─────────────────────────────────────────────────
+    mainFrame.addEventListener('load', function() {
+      inject(mainFrame, currentMain);
+    });
+
+    // ─── Message handler ──────────────────────────────────────────────────────
+    window.addEventListener('message', function(e) {
+      var d = e.data;
+      if (!d || !d.type) return;
+
+      var fromSheet = (d.screen === currentSheet);
+      var rules = NAV[d.screen] || {};
+
+      if (d.type === 'btn') {
+        var dest = rules[d.idx];
+        if (dest === undefined) return;
+
+        if (dest === 'dismiss') {
+          closeSheet();
+          return;
+        }
+
+        if (SHEET_SCREENS.has(dest)) {
+          // Open target as a sheet overlay
+          openSheet(dest);
+          return;
+        }
+
+        if (fromSheet) {
+          // Button inside sheet → close sheet, then navigate main if needed
+          if (dest === currentMain) {
+            closeSheet();
+          } else {
+            closeSheet(dest);
+          }
+          return;
+        }
+
+        // Normal main-frame navigation
+        loadMain(dest);
+      }
+
+      if (d.type === 'card') {
+        var cardDest = rules['_card'];
+        if (!cardDest) return;
+        if (SHEET_SCREENS.has(cardDest)) {
+          openSheet(cardDest);
+        } else {
+          loadMain(cardDest);
+        }
+      }
+    });
+  </script>
+</body>
+</html>

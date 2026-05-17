@@ -1,0 +1,255 @@
+@import './tokens.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+
+  /* ── App viewport ───────────────────────────────────────────── */
+
+  .app-viewport {
+    @apply relative flex flex-col text-zinc-950 overflow-hidden;
+    font-size: var(--text-size-body);
+    line-height: var(--text-lh-body);
+    letter-spacing: var(--text-tracking-normal);
+  }
+
+
+  /* ── Navigation header ──────────────────────────────────────── */
+
+  .nav-header {
+    @apply sticky top-0 flex items-center justify-between text-zinc-950;
+    height: var(--size-nav);
+    padding-top: var(--safe-top);
+    padding-left: var(--safe-left);
+    padding-right: var(--safe-right);
+    z-index: var(--z-nav);
+    background: var(--color-bg-nav);
+    backdrop-filter: blur(var(--blur-glass));
+    -webkit-backdrop-filter: blur(var(--blur-glass));
+    font-size: var(--text-size-body);
+    letter-spacing: var(--text-tracking-normal);
+  }
+
+  .nav-logo-row {
+    @apply flex items-center;
+    gap: var(--primitive-space-2);
+    height: var(--size-logo-row);
+  }
+
+  .nav-logo-btn {
+    @apply flex items-center justify-center rounded-lg text-zinc-950;
+    height: var(--size-logo-btn);
+    width: var(--size-logo-btn);
+    box-shadow: var(--elevation-glass-btn);
+  }
+
+  .nav-actions {
+    @apply flex items-center;
+    gap: var(--primitive-space-1);
+    height: var(--size-nav-actions-h);
+    width: var(--size-nav-actions-w);
+  }
+
+
+  /* ── Bottom tab bar ─────────────────────────────────────────── */
+
+  .tab-bar {
+    @apply flex w-full;
+    height: var(--size-tab-bar);
+    padding-bottom: var(--safe-bottom);
+    background: var(--color-bg-tabbar);
+    backdrop-filter: blur(var(--blur-glass));
+    -webkit-backdrop-filter: blur(var(--blur-glass));
+  }
+
+  .tab-bar-item {
+    @apply flex-1 flex flex-col items-center justify-center font-medium;
+    height: var(--size-tab-item);
+    gap: var(--size-dot);
+    font-size: var(--text-size-tab);
+    letter-spacing: var(--text-tracking-wide);
+    padding: var(--primitive-space-px) var(--primitive-space-1-5);
+  }
+
+  .tab-bar-item--active   { @apply text-zinc-950; }
+  .tab-bar-item--inactive { @apply text-zinc-400; }
+
+
+  /* ── Section layout ─────────────────────────────────────────── */
+
+  .section-header-row {
+    @apply flex justify-between items-baseline w-full;
+    padding: var(--spacing-section-x) var(--spacing-section-x) var(--spacing-section-bottom) var(--spacing-section-x);
+  }
+
+  .section-header-row--lg {
+    @apply flex justify-between items-baseline w-full;
+    padding: var(--spacing-section-top) var(--spacing-section-x) var(--spacing-section-bottom) var(--spacing-section-x);
+  }
+
+  .session-card-list {
+    @apply flex flex-col w-full;
+    padding: var(--spacing-list-y) var(--spacing-page-x);
+    gap: var(--spacing-list-gap);
+  }
+
+
+  /* ── Session card ────────────────────────────────────────────── */
+
+  .session-card {
+    @apply block text-left bg-white w-full;
+    border-radius: var(--radius-card);
+    padding: var(--spacing-card-top) var(--spacing-card-x) var(--spacing-card-bottom) var(--spacing-card-x);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--elevation-card);
+  }
+
+  .session-card-top {
+    @apply flex justify-between items-start;
+    gap: var(--spacing-card-gap);
+  }
+
+  .session-card-meta {
+    @apply flex items-center;
+    gap: var(--spacing-meta-gap);
+  }
+
+  .session-card-divider {
+    @apply flex w-full;
+    gap: var(--size-dot);
+    height: var(--size-progress-track);
+    margin: var(--spacing-divider-y) 0;
+  }
+
+
+  /* ── Icon buttons ────────────────────────────────────────────── */
+
+  .btn-icon {
+    @apply flex items-center justify-center;
+    border-radius: var(--radius-btn-icon);
+    height: var(--size-btn-icon);
+    width: var(--size-btn-icon);
+    padding: var(--primitive-space-px) var(--primitive-space-1-5);
+  }
+
+  .btn-pill {
+    @apply flex items-center justify-center rounded-lg font-medium text-zinc-950;
+    height: var(--size-btn-pill);
+    padding: 0 var(--primitive-space-2-5) 0 var(--primitive-space-2);
+    gap: var(--primitive-space-1);
+    font-size: var(--text-size-btn-pill);
+  }
+
+
+  /* ── Typography ─────────────────────────────────────────────── */
+
+  .text-section-title {
+    @apply font-semibold text-zinc-950;
+    font-size: var(--text-size-section-title);
+    line-height: var(--text-lh-heading);
+    letter-spacing: var(--text-tracking-tight);
+  }
+
+  .text-stat-xl {
+    @apply font-semibold text-zinc-950;
+    font-size: var(--text-size-stat-xl);
+    letter-spacing: var(--text-tracking-tighter);
+  }
+
+  .text-stat-xl--paid {
+    @apply font-semibold text-green-600;
+    font-size: var(--text-size-stat-xl);
+    letter-spacing: var(--text-tracking-tighter);
+  }
+
+  .text-stat-md {
+    @apply font-semibold text-right;
+    font-size: var(--text-size-stat-md);
+    letter-spacing: var(--text-tracking-tight);
+  }
+
+  .text-stat-md--dim { @apply text-zinc-300; }
+
+  .text-label-md {
+    @apply font-semibold text-zinc-950;
+    font-size: var(--text-size-label-md);
+    letter-spacing: var(--text-tracking-snug);
+  }
+
+  .text-body {
+    @apply text-zinc-950;
+    font-size: var(--text-size-body);
+    line-height: var(--text-lh-body);
+    letter-spacing: var(--text-tracking-normal);
+  }
+
+  .text-meta {
+    @apply font-medium text-zinc-600;
+    font-size: var(--text-size-meta);
+    letter-spacing: var(--text-tracking-normal);
+  }
+
+  .text-label-sm {
+    @apply text-zinc-400;
+    font-size: var(--text-size-label-sm);
+  }
+
+  .text-paid {
+    @apply font-semibold text-green-700;
+    font-size: var(--text-size-label-sm);
+    letter-spacing: var(--text-tracking-wider);
+  }
+
+  .text-tab {
+    @apply font-medium;
+    font-size: var(--text-size-tab);
+    letter-spacing: var(--text-tracking-wide);
+  }
+
+
+  /* ── Avatar / player initials chips ─────────────────────────── */
+
+  .avatar-chip {
+    @apply rounded-full flex items-center justify-center font-semibold flex-shrink-0;
+    letter-spacing: var(--text-tracking-snug);
+  }
+
+  .avatar-chip--lg { height: var(--size-avatar-lg); width: var(--size-avatar-lg); font-size: var(--text-size-sm); }
+  .avatar-chip--md { height: var(--size-avatar-md); width: var(--size-avatar-md); font-size: var(--text-size-2xs); }
+  .avatar-chip--sm { height: var(--size-avatar-sm); width: var(--size-avatar-sm); font-size: var(--text-size-2xs); }
+
+  .avatar-chip--pink   { @apply bg-pink-100 text-pink-800; }
+  .avatar-chip--blue   { @apply bg-blue-100 text-blue-800; }
+  .avatar-chip--red    { @apply bg-red-100 text-red-800; }
+  .avatar-chip--yellow { @apply bg-yellow-100 text-yellow-800; }
+  .avatar-chip--zinc   { @apply bg-zinc-100 text-zinc-600; }
+
+
+  /* ── Payment progress track ──────────────────────────────────── */
+
+  .progress-track {
+    @apply flex w-full rounded-full overflow-hidden;
+    height: var(--size-progress-track);
+    gap: var(--size-dot);
+  }
+
+  .progress-segment {
+    @apply flex-1 rounded-full;
+    height: var(--size-progress-track);
+  }
+
+  .progress-segment--paid   { @apply bg-amber-500; }
+  .progress-segment--unpaid { @apply bg-zinc-100; }
+
+
+  /* ── Dot separator ───────────────────────────────────────────── */
+
+  .dot-separator {
+    @apply rounded-full bg-zinc-300 flex-shrink-0;
+    height: var(--size-dot);
+    width: var(--size-dot);
+  }
+
+}

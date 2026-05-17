@@ -1,0 +1,257 @@
+/* ================================================================
+   DESIGN TOKENS — gameplay-3
+   Three-layer token architecture
+     Layer 1 — Primitives  (raw named values, source of truth)
+     Layer 2 — Semantic aliases  (contextual names → Layer 1)
+   Layer 3 = component CSS in globals.css (references Layer 2 only)
+   ================================================================ */
+
+
+/* ── Layer 1: Primitives ─────────────────────────────────────── */
+
+:root {
+
+  /* --- Color: neutrals --- */
+  --primitive-white:      #ffffff;
+  --primitive-black:      #000000;
+  --primitive-zinc-50:    #fafafa;
+  --primitive-zinc-100:   #f4f4f5;
+  --primitive-zinc-200:   #e4e4e7;
+  --primitive-zinc-300:   #d4d4d8;
+  --primitive-zinc-400:   #a1a1aa;
+  --primitive-zinc-600:   #52525b;
+  --primitive-zinc-950:   #09090b;
+
+  /* --- Color: green / success --- */
+  --primitive-green-200:  #bbf7d0;
+  --primitive-green-600:  #16a34a;
+  --primitive-green-700:  #15803d;
+
+  /* --- Color: amber / warning --- */
+  --primitive-amber-200:  #fde68a;
+  --primitive-amber-500:  #f59e0b;
+
+  /* --- Color: avatar palette --- */
+  --primitive-pink-100:   #fce7f3;
+  --primitive-pink-800:   #9d174d;
+  --primitive-blue-100:   #dbeafe;
+  --primitive-blue-800:   #1e40af;
+  --primitive-red-100:    #fee2e2;
+  --primitive-red-800:    #991b1b;
+  --primitive-yellow-100: #fef9c3;
+  --primitive-yellow-800: #92400e;
+
+  /* --- Spacing (4 px base grid) --- */
+  --primitive-space-px:     1px;
+  --primitive-space-0-75:   3px;
+  --primitive-space-1:      4px;
+  --primitive-space-1-5:    6px;
+  --primitive-space-2:      8px;
+  --primitive-space-2-5:    10px;
+  --primitive-space-3:      12px;
+  --primitive-space-3-5:    14px;
+  --primitive-space-4:      16px;
+  --primitive-space-4-5:    18px;
+  --primitive-space-5:      20px;
+  --primitive-space-6:      24px;
+  --primitive-space-8:      32px;
+  --primitive-space-8-5:    34px;
+  --primitive-space-9:      36px;
+  --primitive-space-11-75:  47px;
+
+  /* --- Typography: font sizes --- */
+  --primitive-font-size-2xs:     10px;
+  --primitive-font-size-xs:      10.5px;
+  --primitive-font-size-sm:      12px;
+  --primitive-font-size-sm-plus: 12.5px;
+  --primitive-font-size-base:    13px;
+  --primitive-font-size-body:    15px;
+  --primitive-font-size-md:      16px;
+  --primitive-font-size-lg:      17px;
+  --primitive-font-size-xl:      18px;
+  --primitive-font-size-2xl:     28px;
+
+  /* --- Typography: font weights --- */
+  --primitive-font-weight-normal:   400;
+  --primitive-font-weight-medium:   500;
+  --primitive-font-weight-semibold: 600;
+
+  /* --- Typography: line heights --- */
+  --primitive-line-height-body:    21.75px;
+  --primitive-line-height-heading: 24.65px;
+
+  /* --- Typography: letter spacing --- */
+  --primitive-tracking-tighter: -0.8px;
+  --primitive-tracking-tight:   -0.4px;
+  --primitive-tracking-snug:    -0.2px;
+  --primitive-tracking-normal:  -0.075px;
+  --primitive-tracking-wide:     0.1px;
+  --primitive-tracking-wider:    0.2px;
+
+  /* --- Border radius --- */
+  --primitive-radius-sm:   9px;
+  --primitive-radius-md:   14px;
+  --primitive-radius-lg:   8px;
+  --primitive-radius-full: 9999px;
+
+  /* --- Elevation / shadows --- */
+  --primitive-shadow-xs: rgba(0, 0, 0, 0.04) 0px 1px 2px 0px;
+  --primitive-shadow-sm: rgba(255, 255, 255, 0.4) 0px 1px 0px 0px inset,
+                         rgba(0, 0, 0, 0.08) 0px 1px 2px 0px;
+
+  /* --- Z-index scale --- */
+  --primitive-z-10:  10;
+  --primitive-z-100: 100;
+  --primitive-z-200: 200;
+
+  /* --- Motion --- */
+  --primitive-duration-fast:    150ms;
+  --primitive-duration-base:    200ms;
+  --primitive-duration-slow:    300ms;
+  --primitive-easing-default:   ease-in-out;
+  --primitive-easing-spring:    cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* --- Blur --- */
+  --primitive-blur-glass: 12px;
+
+  /* --- Component size primitives --- */
+  --primitive-size-nav-height:          99px;
+  --primitive-size-nav-safe-left:       18px;
+  --primitive-size-nav-safe-right:      12px;
+  --primitive-size-logo-row:            26px;
+  --primitive-size-logo-btn:            26px;
+  --primitive-size-nav-actions-height:  36px;
+  --primitive-size-nav-actions-width:   110px;
+  --primitive-size-tab-bar-height:      87px;
+  --primitive-size-tab-item-height:     52px;
+  --primitive-size-btn-icon:            36px;
+  --primitive-size-btn-pill-height:     32px;
+  --primitive-size-avatar-lg:           30px;
+  --primitive-size-avatar-md:           22px;
+  --primitive-size-avatar-sm:           22px;
+  --primitive-size-progress-track:      4px;
+  --primitive-size-dot:                 3px;
+}
+
+
+/* ── Layer 2: Semantic Aliases ───────────────────────────────── */
+
+:root {
+
+  /* --- Text colors --- */
+  --color-text:               var(--primitive-zinc-950, #09090b);
+  --color-text-secondary:     var(--primitive-zinc-600, #52525b);
+  --color-text-muted:         var(--primitive-zinc-400, #a1a1aa);
+  --color-text-icon:          var(--primitive-zinc-300, #d4d4d8);
+  --color-text-success:       var(--primitive-green-600, #16a34a);
+  --color-text-success-label: var(--primitive-green-700, #15803d);
+
+  /* --- Background colors --- */
+  --color-bg-page:   var(--primitive-zinc-50,  #fafafa);
+  --color-bg-card:   var(--primitive-white,     #ffffff);
+  --color-bg-subtle: var(--primitive-zinc-100,  #f4f4f5);
+  --color-bg-nav:    rgba(255, 255, 255, 0.85);
+  --color-bg-tabbar: rgba(255, 255, 255, 0.92);
+
+  /* --- Border colors --- */
+  --color-border:         rgba(0, 0, 0, 0.07);
+  --color-border-strong:  rgba(0, 0, 0, 0.12);
+  --color-border-warning: var(--primitive-amber-200, #fde68a);
+  --color-border-success: var(--primitive-green-200, #bbf7d0);
+  --color-border-neutral: var(--primitive-zinc-200,  #e4e4e7);
+
+  /* --- Interactive / accent --- */
+  --color-progress-paid:   var(--primitive-amber-500, #f59e0b);
+  --color-progress-unpaid: var(--primitive-zinc-100,  #f4f4f5);
+
+  /* --- Typography: font sizes --- */
+  --text-size-2xs:           var(--primitive-font-size-2xs,     10px);
+  --text-size-xs:            var(--primitive-font-size-xs,      10.5px);
+  --text-size-sm:            var(--primitive-font-size-sm,      12px);
+  --text-size-label-sm:      var(--primitive-font-size-sm-plus, 12.5px);
+  --text-size-meta:          var(--primitive-font-size-base,    13px);
+  --text-size-btn-pill:      var(--primitive-font-size-base,    13px);
+  --text-size-body:          var(--primitive-font-size-body,    15px);
+  --text-size-label-md:      var(--primitive-font-size-md,      16px);
+  --text-size-section-title: var(--primitive-font-size-lg,      17px);
+  --text-size-stat-md:       var(--primitive-font-size-xl,      18px);
+  --text-size-stat-xl:       var(--primitive-font-size-2xl,     28px);
+  --text-size-tab:           var(--primitive-font-size-xs,      10.5px);
+
+  /* --- Typography: weights --- */
+  --text-weight-normal:   var(--primitive-font-weight-normal,   400);
+  --text-weight-medium:   var(--primitive-font-weight-medium,   500);
+  --text-weight-semibold: var(--primitive-font-weight-semibold, 600);
+
+  /* --- Typography: line heights --- */
+  --text-lh-body:    var(--primitive-line-height-body,    21.75px);
+  --text-lh-heading: var(--primitive-line-height-heading, 24.65px);
+
+  /* --- Typography: letter spacing --- */
+  --text-tracking-tighter: var(--primitive-tracking-tighter, -0.8px);
+  --text-tracking-tight:   var(--primitive-tracking-tight,   -0.4px);
+  --text-tracking-snug:    var(--primitive-tracking-snug,    -0.2px);
+  --text-tracking-normal:  var(--primitive-tracking-normal,  -0.075px);
+  --text-tracking-wide:    var(--primitive-tracking-wide,     0.1px);
+  --text-tracking-wider:   var(--primitive-tracking-wider,    0.2px);
+
+  /* --- Spacing: layout aliases --- */
+  --spacing-page-x:         var(--primitive-space-5,   20px);
+  --spacing-section-x:      var(--primitive-space-5,   20px);
+  --spacing-section-top:    var(--primitive-space-6,   24px);
+  --spacing-section-bottom: var(--primitive-space-2,   8px);
+  --spacing-list-y:         var(--primitive-space-1,   4px);
+  --spacing-list-gap:       var(--primitive-space-2-5, 10px);
+  --spacing-card-x:         var(--primitive-space-3-5, 14px);
+  --spacing-card-top:       var(--primitive-space-3-5, 14px);
+  --spacing-card-bottom:    var(--primitive-space-3,   12px);
+  --spacing-card-gap:       var(--primitive-space-2,   8px);
+  --spacing-meta-gap:       var(--primitive-space-1-5, 6px);
+  --spacing-divider-y:      var(--primitive-space-2,   8px);
+
+  /* --- Border radius: semantic --- */
+  --radius-card:     var(--primitive-radius-md,   14px);
+  --radius-btn-icon: var(--primitive-radius-sm,   9px);
+  --radius-btn-pill: var(--primitive-radius-lg,   8px);
+  --radius-full:     var(--primitive-radius-full, 9999px);
+
+  /* --- Elevation / shadows: semantic --- */
+  --elevation-card:      var(--primitive-shadow-xs);
+  --elevation-glass-btn: var(--primitive-shadow-sm);
+
+  /* --- Z-index: semantic --- */
+  --z-nav:   var(--primitive-z-10,  10);
+  --z-modal: var(--primitive-z-100, 100);
+  --z-toast: var(--primitive-z-200, 200);
+
+  /* --- Motion: semantic --- */
+  --motion-duration-quick: var(--primitive-duration-fast, 150ms);
+  --motion-duration-base:  var(--primitive-duration-base, 200ms);
+  --motion-duration-slow:  var(--primitive-duration-slow, 300ms);
+  --motion-easing:         var(--primitive-easing-default, ease-in-out);
+
+  /* --- Blur: semantic --- */
+  --blur-glass: var(--primitive-blur-glass, 12px);
+
+  /* --- Safe area insets --- */
+  --safe-top:   var(--primitive-space-11-75,         47px);
+  --safe-bottom: var(--primitive-space-8-5,           34px);
+  --safe-left:  var(--primitive-size-nav-safe-left,  18px);
+  --safe-right: var(--primitive-size-nav-safe-right, 12px);
+
+  /* --- Component sizes: semantic --- */
+  --size-nav:            var(--primitive-size-nav-height,          99px);
+  --size-logo-row:       var(--primitive-size-logo-row,            26px);
+  --size-logo-btn:       var(--primitive-size-logo-btn,            26px);
+  --size-nav-actions-h:  var(--primitive-size-nav-actions-height,  36px);
+  --size-nav-actions-w:  var(--primitive-size-nav-actions-width,   110px);
+  --size-tab-bar:        var(--primitive-size-tab-bar-height,      87px);
+  --size-tab-item:       var(--primitive-size-tab-item-height,     52px);
+  --size-btn-icon:       var(--primitive-size-btn-icon,            36px);
+  --size-btn-pill:       var(--primitive-size-btn-pill-height,     32px);
+  --size-avatar-lg:      var(--primitive-size-avatar-lg,           30px);
+  --size-avatar-md:      var(--primitive-size-avatar-md,           22px);
+  --size-avatar-sm:      var(--primitive-size-avatar-sm,           22px);
+  --size-progress-track: var(--primitive-size-progress-track,      4px);
+  --size-dot:            var(--primitive-size-dot,                 3px);
+}
