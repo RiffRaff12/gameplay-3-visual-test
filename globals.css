@@ -252,4 +252,150 @@
     width: var(--size-dot);
   }
 
+
+  /* ── Back navigation ─────────────────────────────────────────── */
+
+  .nav-back-btn {
+    @apply flex items-center font-medium text-zinc-950;
+    gap: var(--primitive-space-1);
+    font-size: var(--text-size-body);
+    letter-spacing: var(--text-tracking-normal);
+  }
+
+
+  /* ── Session detail hero ─────────────────────────────────────── */
+
+  .session-hero {
+    @apply flex flex-col bg-white;
+    padding: var(--primitive-space-5) var(--spacing-page-x) var(--primitive-space-6);
+    gap: var(--primitive-space-1-5);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .session-status-pill {
+    @apply inline-flex items-center self-start font-semibold bg-amber-100 text-amber-700;
+    border-radius: var(--radius-full);
+    font-size: var(--text-size-xs);
+    letter-spacing: var(--text-tracking-wider);
+    padding: var(--primitive-space-0-75) var(--primitive-space-2);
+  }
+
+  .text-session-title {
+    @apply font-semibold text-zinc-950;
+    font-size: var(--text-size-stat-xl);
+    letter-spacing: var(--text-tracking-tighter);
+    line-height: 1.1;
+  }
+
+  .session-hero-meta {
+    @apply flex flex-col;
+    gap: var(--primitive-space-2);
+    margin-top: var(--primitive-space-1);
+  }
+
+  .session-hero-meta-row {
+    @apply flex items-center text-zinc-600;
+    gap: var(--spacing-meta-gap);
+    font-size: var(--text-size-meta);
+    letter-spacing: var(--text-tracking-normal);
+  }
+
+
+  /* ── Stat card grid ──────────────────────────────────────────── */
+
+  .stat-card-grid {
+    @apply grid grid-cols-3 w-full;
+    padding: var(--spacing-section-top) var(--spacing-page-x) 0;
+    gap: var(--primitive-space-2);
+  }
+
+  .stat-card {
+    @apply flex flex-col bg-white;
+    border-radius: var(--radius-card);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--elevation-card);
+    padding: var(--spacing-card-top) var(--spacing-card-x) var(--spacing-card-bottom);
+    gap: var(--primitive-space-1);
+  }
+
+  .stat-card-label {
+    @apply font-medium text-zinc-400;
+    font-size: var(--text-size-xs);
+    letter-spacing: var(--text-tracking-wider);
+  }
+
+  .stat-card-value {
+    @apply font-semibold text-zinc-950;
+    font-size: var(--text-size-stat-md);
+    letter-spacing: var(--text-tracking-tight);
+  }
+
+  .stat-card-sub {
+    @apply text-zinc-400;
+    font-size: var(--text-size-xs);
+    letter-spacing: var(--text-tracking-normal);
+  }
+
+  .stat-card-breakdown-row {
+    @apply flex items-center;
+    gap: var(--primitive-space-1-5);
+  }
+
+  .stat-card-breakdown-dot {
+    @apply rounded-full flex-shrink-0;
+    height: var(--primitive-space-1-5);
+    width: var(--primitive-space-1-5);
+  }
+
+  .stat-card-breakdown-dot--paid    { background: var(--primitive-green-600); }
+  .stat-card-breakdown-dot--pending { background: var(--primitive-amber-500); }
+  .stat-card-breakdown-dot--free    { background: var(--primitive-zinc-300); }
+
+
+  /* ── Action row ──────────────────────────────────────────────── */
+
+  .action-row {
+    @apply flex w-full;
+    padding: var(--primitive-space-3) var(--spacing-page-x) 0;
+    gap: var(--primitive-space-2);
+  }
+
+  .action-btn {
+    @apply flex-1 flex flex-col items-center justify-center bg-white font-medium text-zinc-950;
+    border-radius: var(--radius-card);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--elevation-card);
+    gap: var(--primitive-space-1-5);
+    padding: var(--primitive-space-3) 0;
+    font-size: var(--text-size-sm);
+    letter-spacing: var(--text-tracking-normal);
+  }
+
+
+  /* ── Status badges ───────────────────────────────────────────── */
+
+  .status-badge {
+    @apply flex items-center justify-center font-semibold;
+    border-radius: var(--radius-full);
+    font-size: var(--text-size-xs);
+    letter-spacing: var(--text-tracking-wider);
+    padding: var(--primitive-space-0-75) var(--primitive-space-2-5);
+  }
+
+  .status-badge--paid    { @apply bg-green-100 text-green-700; }
+  .status-badge--pending { @apply bg-amber-100 text-amber-700; }
+  .status-badge--free    { @apply bg-zinc-100 text-zinc-500; }
+
+
+  /* ── Roster rows ─────────────────────────────────────────────── */
+
+  .roster-row {
+    @apply flex items-center justify-between bg-white;
+    border-radius: var(--radius-card);
+    border: 1px solid var(--color-border);
+    box-shadow: var(--elevation-card);
+    padding: var(--spacing-card-top) var(--spacing-card-x);
+    gap: var(--spacing-card-gap);
+  }
+
 }

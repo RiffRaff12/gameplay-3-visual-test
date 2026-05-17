@@ -59,7 +59,7 @@ export default function HomePage() {
         <div className="session-card-list">
 
           {/* ── Session 1: TUE 19 MAY ── */}
-          <button className="session-card">
+          <Link href="/sessions/1" className="session-card">
             <div className="session-card-top">
               <div className="flex flex-col gap-0.5">
                 <span className="text-label-sm">TUE 19 MAY, 8:00 PM</span>
@@ -99,10 +99,10 @@ export default function HomePage() {
               <div className="avatar-chip avatar-chip--md avatar-chip--zinc">MB</div>
               <div className="avatar-chip avatar-chip--md avatar-chip--zinc">+2</div>
             </div>
-          </button>
+          </Link>
 
           {/* ── Session 2: TUE 26 MAY ── */}
-          <button className="session-card">
+          <Link href="/sessions/2" className="session-card">
             <div className="session-card-top">
               <div className="flex flex-col gap-0.5">
                 <span className="text-label-sm">TUE 26 MAY, 8:00 PM</span>
@@ -137,10 +137,10 @@ export default function HomePage() {
               <div className="avatar-chip avatar-chip--md avatar-chip--red">WH</div>
               <div className="avatar-chip avatar-chip--md avatar-chip--pink">RS</div>
             </div>
-          </button>
+          </Link>
 
           {/* ── Session 3: TUE 2 JUN ── */}
-          <button className="session-card">
+          <Link href="/sessions/3" className="session-card">
             <div className="session-card-top">
               <div className="flex flex-col gap-0.5">
                 <span className="text-label-sm">TUE 2 JUN, 8:00 PM</span>
@@ -170,7 +170,7 @@ export default function HomePage() {
             </div>
 
             <span className="text-label-sm">No players yet</span>
-          </button>
+          </Link>
 
         </div>
 
